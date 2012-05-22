@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using JdSoft.Apple.Apns.Notifications;
 using log4net;
+using JdSoft.Apple.Apns.Notifications;
+using JdSoftNotifications = JdSoft.Apple.Apns.Notifications;
 
 namespace RegoME.Apns
 {
-    public class NotificationLogic :INotificationLogic
+    public class NotificationService :INotificationService
     {
         #region Properties
 
@@ -29,7 +30,7 @@ namespace RegoME.Apns
         #endregion
 
         //Notification service 
-        private NotificationService notificationService;
+        private JdSoftNotifications.NotificationService notificationService;
         
         //nubmer of connections
         private int noConnections;
@@ -39,7 +40,10 @@ namespace RegoME.Apns
 
         #endregion
 
-        public NotificationLogic() {
+        /// <summary>
+        /// Default constructor. The p12 file are required to be set up manually if this is used.
+        /// </summary>
+        public NotificationService() {
             Init();
         }
 
@@ -48,8 +52,8 @@ namespace RegoME.Apns
         /// </summary>
         /// <param name="p12FilePath">File path to the .p12 or .pfx file that identify the apps</param>
         /// <param name="p12FilePassword">Password to the .p12 file</param>
-        public NotificationLogic(string p12FilePath, string p12FilePassword):this(){
-            P12FilePath = p12FilePassword;
+        public NotificationService(string p12FilePath, string p12FilePassword){
+            P12FilePath = p12FilePath;
             P12FilePassword = p12FilePassword;
             Init();
         }
@@ -57,19 +61,19 @@ namespace RegoME.Apns
         //Initialize
         private void Init() {
             noConnections = 1;//defaut to 1 for testing purposes
-            notificationService = new NotificationService(IsUnderDevelopment, P12FilePath, P12FilePassword, noConnections);
+            notificationService = new JdSoftNotifications.NotificationService(IsUnderDevelopment, P12FilePath, P12FilePassword, noConnections);
 
             notificationService.SendRetries = 5; //5 retries before generating notificationfailed event
             notificationService.ReconnectDelay = 5000; //5 seconds
 
-            notificationService.Error += new NotificationService.OnError(service_Error);
-            notificationService.NotificationTooLong += new NotificationService.OnNotificationTooLong(service_NotificationTooLong);
-            notificationService.BadDeviceToken += new NotificationService.OnBadDeviceToken(service_BadDeviceToken);
-            notificationService.NotificationFailed += new NotificationService.OnNotificationFailed(service_NotificationFailed);
-            notificationService.NotificationSuccess += new NotificationService.OnNotificationSuccess(service_NotificationSuccess);
-            notificationService.Connecting += new NotificationService.OnConnecting(service_Connecting);
-            notificationService.Connected += new NotificationService.OnConnected(service_Connected);
-            notificationService.Disconnected += new NotificationService.OnDisconnected(service_Disconnected);
+            notificationService.Error += new JdSoftNotifications.NotificationService.OnError(service_Error);
+            notificationService.NotificationTooLong += new JdSoftNotifications.NotificationService.OnNotificationTooLong(service_NotificationTooLong);
+            notificationService.BadDeviceToken += new JdSoftNotifications.NotificationService.OnBadDeviceToken(service_BadDeviceToken);
+            notificationService.NotificationFailed += new JdSoftNotifications.NotificationService.OnNotificationFailed(service_NotificationFailed);
+            notificationService.NotificationSuccess += new JdSoftNotifications.NotificationService.OnNotificationSuccess(service_NotificationSuccess);
+            notificationService.Connecting += new JdSoftNotifications.NotificationService.OnConnecting(service_Connecting);
+            notificationService.Connected += new JdSoftNotifications.NotificationService.OnConnected(service_Connected);
+            notificationService.Disconnected += new JdSoftNotifications.NotificationService.OnDisconnected(service_Disconnected);
         }
 
         #region Implement INotificationLogic

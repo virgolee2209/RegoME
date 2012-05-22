@@ -5,7 +5,7 @@ using System.Text;
 
 namespace RegoME.Apns
 {
-    public interface INotificationLogic
+    public interface INotificationService
     {
         /// <summary>
         /// Send a chat message to an user

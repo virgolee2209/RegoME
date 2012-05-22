@@ -56,9 +56,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="INotificationLogic.cs" />
+    <Compile Include="INotificationService.cs" />
     <Compile Include="Message.cs" />
-    <Compile Include="NotificationLogic.cs" />
+    <Compile Include="NotificationService.cs" />
     <Compile Include="NotificationType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
